@@ -90,7 +90,7 @@ x_rand_span_y = 0.02 * np.random.randint(1, 4, (1, N)) # rand_span serves as the
 
 x_rand_span_xy = np.concatenate((x_rand_span_x, x_rand_span_y))
 
-def create_si_pr_barrier_certificate_centralized(gamma = (1e4)/10, safety_radius = 3, magnitude_limit = 0.2,Confidence = 0.5,XRandSpan=None, URandSpan=None):
+def create_si_pr_barrier_certificate_centralized(gamma = 100, safety_radius = 0.2, magnitude_limit = 0.2,Confidence = 0.5,XRandSpan=None, URandSpan=None):
     if URandSpan is None:
         URandSpan = [0]
     if XRandSpan is None:
@@ -205,7 +205,7 @@ def create_pr_unicycle_barrier_certificate_cent(barrier_gain=100, safety_radius=
     assert confidence_level <= 1, "In the function create_pr_unicycle_barrier_certificate, the confidence level must be less than 1. Recieved %r." % confidence_level
     assert confidence_level >= 0, "In the function create_pr_unicycle_barrier_certificate, the confidence level must be positive (greater than 0). Recieved %r." % confidence_level
 
-    si_barrier_cert = create_si_pr_barrier_certificate_centralized(gamma=barrier_gain, safety_radius=safety_radius+projection_distance, Confidence=confidence_level)
+    si_barrier_cert = create_si_pr_barrier_certificate_centralized(gamma=barrier_gain, safety_radius=safety_radius+projection_distance, Confidence=confidence_level,XRandSpan=XRandSpan, URandSpan=URandSpan)
 
     si_to_uni_dyn, uni_to_si_states = create_si_to_uni_mapping(projection_distance=projection_distance)
 
