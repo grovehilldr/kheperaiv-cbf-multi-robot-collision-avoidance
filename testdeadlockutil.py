@@ -74,7 +74,7 @@ def create_unicycle_barrier_certificate(barrier_gain=100, safety_radius=0.12, pr
     assert magnitude_limit <= 0.2, "In the function create_unicycle_barrier_certificate, the maximum linear velocity of the robot (magnitude_limit) must be less than the max speed of the robot (0.2m/s). Recieved %r." % magnitude_limit
 
 
-    si_barrier_cert = create_single_integrator_barrier_certificate(barrier_gain=barrier_gain, safety_radius=safety_radius+projection_distance)
+    si_barrier_cert = de_create_single_integrator_barrier_certificate(barrier_gain=barrier_gain, safety_radius=safety_radius+projection_distance)
 
     si_to_uni_dyn, uni_to_si_states = create_si_to_uni_mapping(projection_distance=projection_distance)
 
@@ -95,7 +95,9 @@ def create_unicycle_barrier_certificate(barrier_gain=100, safety_radius=0.12, pr
         #Convert unicycle control command to single integrator one
         dxi = uni_to_si_dyn(dxu, x)
         #Apply single integrator barrier certificate
-        dxi = si_barrier_cert(dxi, x_si)
+        
+        #double check this!! 
+        dxi = si_barrier_cert(dxi, x_si, np.delete(t, 0, axis=1))
         #Return safe unicycle command
         return si_to_uni_dyn(dxi, x)
 
